@@ -9,14 +9,7 @@ interface TimerDisplayProps {
 }
 
 const getModeColor = (mode: TimerMode) => {
-  switch (mode) {
-    case 'focus':
-      return 'hsl(var(--timer-focus))';
-    case 'short-break':
-      return 'hsl(var(--timer-short-break))';
-    case 'long-break':
-      return 'hsl(var(--timer-long-break))';
-  }
+  return 'hsl(var(--neon-green))';
 };
 
 const getModeLabel = (mode: TimerMode) => {
@@ -35,17 +28,29 @@ export const TimerDisplay = ({ minutes, seconds, progress, mode }: TimerDisplayP
   
   return (
     <div className="relative flex items-center justify-center">
+      {/* Dark background circle */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="w-[280px] h-[280px] rounded-full bg-background/80 border-2 border-border" />
+      </div>
+      
       <CircularProgress 
         progress={progress} 
         size={320}
-        strokeWidth={10}
+        strokeWidth={12}
         color={color}
       />
+      
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <p className="text-sm font-medium mb-2 opacity-70">{getModeLabel(mode)}</p>
-        <div className="text-7xl font-bold tabular-nums tracking-tight">
-          {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
+        {/* Neon glow effect on time */}
+        <div className="relative">
+          <div className="absolute inset-0 blur-2xl bg-neon-green opacity-30" />
+          <div className="text-8xl font-black tabular-nums tracking-tight neon-text text-primary relative z-10">
+            {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
+          </div>
         </div>
+        <p className="text-sm font-medium mt-2 text-muted-foreground uppercase tracking-wider">
+          MINUTOS
+        </p>
       </div>
     </div>
   );

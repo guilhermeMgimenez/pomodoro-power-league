@@ -7,8 +7,8 @@ interface CircularProgressProps {
 
 export const CircularProgress = ({ 
   progress, 
-  size = 280, 
-  strokeWidth = 8,
+  size = 320, 
+  strokeWidth = 12,
   color = "hsl(var(--primary))"
 }: CircularProgressProps) => {
   const radius = (size - strokeWidth) / 2;
@@ -23,9 +23,9 @@ export const CircularProgress = ({
         cy={size / 2}
         r={radius}
         fill="none"
-        stroke="hsl(var(--muted))"
+        stroke="hsl(var(--border))"
         strokeWidth={strokeWidth}
-        opacity={0.2}
+        opacity={0.3}
       />
       {/* Progress circle */}
       <circle
@@ -38,9 +38,9 @@ export const CircularProgress = ({
         strokeDasharray={circumference}
         strokeDashoffset={offset}
         strokeLinecap="round"
-        className="timer-ring"
+        className="transition-all duration-500"
         style={{
-          filter: `drop-shadow(0 0 8px ${color})`
+          filter: `drop-shadow(0 0 20px ${color}) drop-shadow(0 0 40px ${color})`
         }}
       />
     </svg>

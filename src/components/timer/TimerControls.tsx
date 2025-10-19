@@ -10,35 +10,24 @@ interface TimerControlsProps {
 
 export const TimerControls = ({ isRunning, onStart, onPause, onReset }: TimerControlsProps) => {
   return (
-    <div className="flex items-center gap-3 justify-center">
+    <div className="flex items-center gap-4 justify-center">
       {!isRunning ? (
         <Button
           size="lg"
           onClick={onStart}
-          className="gradient-primary text-primary-foreground hover:opacity-90 transition-opacity px-8 h-12 text-base font-semibold"
+          className="flex-1 bg-primary text-primary-foreground hover:opacity-90 transition-opacity h-16 text-lg font-bold rounded-2xl"
         >
-          <Play className="w-5 h-5 mr-2" />
           Iniciar
         </Button>
       ) : (
         <Button
           size="lg"
           onClick={onPause}
-          variant="secondary"
-          className="px-8 h-12 text-base font-semibold"
+          className="flex-1 bg-secondary text-foreground hover:bg-secondary/80 h-16 text-lg font-bold rounded-2xl"
         >
-          <Pause className="w-5 h-5 mr-2" />
           Pausar
         </Button>
       )}
-      <Button
-        size="lg"
-        onClick={onReset}
-        variant="outline"
-        className="h-12 px-6"
-      >
-        <RotateCcw className="w-5 h-5" />
-      </Button>
     </div>
   );
 };
