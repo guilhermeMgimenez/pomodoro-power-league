@@ -3,6 +3,8 @@ import { useTimer, TimerMode } from "@/hooks/useTimer";
 import { TimerDisplay } from "@/components/timer/TimerDisplay";
 import { TimerControls } from "@/components/timer/TimerControls";
 import { CompletionModal } from "@/components/timer/CompletionModal";
+import { CurrentTask } from "@/components/timer/CurrentTask";
+import { ModeSelector } from "@/components/timer/ModeSelector";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { Settings, Star, Flame } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
@@ -26,6 +28,13 @@ const Index = () => {
   const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [earnedXP, setEarnedXP] = useState(0);
   const [earnedCoins, setEarnedCoins] = useState(0);
+  
+  // Current task state
+  const [currentTask] = useState({
+    name: "Estudo de programação Java",
+    totalMinutes: 200,
+    completedMinutes: 60,
+  });
 
   const handleComplete = () => {
     if (mode === 'focus') {
@@ -49,6 +58,8 @@ const Index = () => {
       reset();
     }
   };
+
+  const taskProgress = (currentTask.completedMinutes / currentTask.totalMinutes) * 100;
 
   return (
     <>
@@ -74,8 +85,17 @@ const Index = () => {
             <Progress value={(dailyGoal.current / dailyGoal.total) * 100} className="h-2" />
           </div>
 
+          {/* Mode Selector */}
+          <div className="flex justify-center">
+            <ModeSelector
+              currentMode={mode}
+              onModeChange={handleModeChange}
+              disabled={isRunning}
+            />
+          </div>
+
           {/* Timer Display */}
-          <div className="flex justify-center py-8">
+          <div className="flex justify-center py-4">
             <TimerDisplay
               minutes={minutes}
               seconds={seconds}
@@ -90,6 +110,14 @@ const Index = () => {
             onStart={start}
             onPause={pause}
             onReset={reset}
+          />
+
+          {/* Current Task */}
+          <CurrentTask
+            taskName={currentTask.name}
+            progress={taskProgress}
+            totalMinutes={currentTask.totalMinutes}
+            completedMinutes={currentTask.completedMinutes}
           />
 
           {/* Stats Cards */}

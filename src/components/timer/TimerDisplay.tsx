@@ -9,7 +9,14 @@ interface TimerDisplayProps {
 }
 
 const getModeColor = (mode: TimerMode) => {
-  return 'hsl(var(--neon-green))';
+  switch (mode) {
+    case 'focus':
+      return 'hsl(var(--neon-blue))';
+    case 'short-break':
+      return 'hsl(var(--neon-cyan))';
+    case 'long-break':
+      return 'hsl(var(--neon-sky))';
+  }
 };
 
 const getModeLabel = (mode: TimerMode) => {
@@ -43,8 +50,8 @@ export const TimerDisplay = ({ minutes, seconds, progress, mode }: TimerDisplayP
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         {/* Neon glow effect on time */}
         <div className="relative">
-          <div className="absolute inset-0 blur-2xl bg-neon-green opacity-30" />
-          <div className="text-8xl font-black tabular-nums tracking-tight neon-text text-primary relative z-10">
+          <div className="absolute inset-0 blur-2xl opacity-30" style={{ backgroundColor: color }} />
+          <div className="text-8xl font-black tabular-nums tracking-tight neon-text relative z-10" style={{ color }}>
             {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
           </div>
         </div>
