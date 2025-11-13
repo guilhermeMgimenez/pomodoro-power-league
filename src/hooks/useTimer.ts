@@ -19,6 +19,11 @@ export const useTimer = ({ initialMinutes, onComplete }: UseTimerProps) => {
   const minutes = Math.floor(secondsLeft / 60);
   const seconds = secondsLeft % 60;
 
+  // Update secondsLeft when initialMinutes changes
+  useEffect(() => {
+    setSecondsLeft(initialMinutes * 60);
+  }, [initialMinutes]);
+
   useEffect(() => {
     if (isRunning && secondsLeft > 0) {
       startTimeRef.current = Date.now();
