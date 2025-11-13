@@ -38,7 +38,7 @@ export const CircularProgress = ({
         strokeDasharray={circumference}
         strokeDashoffset={offset}
         strokeLinecap="round"
-        className="transition-all duration-500"
+        className="transition-all duration-1000 ease-out animate-pulse"
         style={{
           filter: `drop-shadow(0 0 20px ${color}) drop-shadow(0 0 40px ${color})`
         }}
