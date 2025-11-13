@@ -12,7 +12,7 @@ const Login = () => {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     // Protótipo: apenas redireciona para home
-    navigate("/");
+    navigate("/home");
   };
 
   return (
