@@ -55,6 +55,11 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        reward: {
+          DEFAULT: "hsl(var(--reward))",
+          foreground: "hsl(var(--reward-foreground))",
+        },
+        elevated: "hsl(var(--elevated))",
         xp: "hsl(var(--xp))",
         coin: "hsl(var(--coin))",
         streak: "hsl(var(--streak))",
@@ -67,6 +72,14 @@ export default {
         "neon-indigo": "hsl(var(--neon-indigo))",
         "neon-yellow": "hsl(var(--neon-yellow))",
         "neon-orange": "hsl(var(--neon-orange))",
+      },
+      fontFamily: {
+        display: ["Space Grotesk", "Manrope", "sans-serif"],
+        sans: ["Manrope", "system-ui", "sans-serif"],
+      },
+      boxShadow: {
+        glow: "0 0 24px hsl(var(--primary) / 0.28)",
+        "glow-reward": "0 0 24px hsl(var(--reward) / 0.28)",
       },
       borderRadius: {
         lg: "var(--radius)",
