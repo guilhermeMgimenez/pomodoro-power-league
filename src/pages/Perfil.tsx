@@ -22,25 +22,25 @@ const Perfil = () => {
 
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4">
-            <div className="bg-card rounded-2xl p-4 text-center border border-border">
-              <Zap className="w-8 h-8 text-xp-color mx-auto mb-2" />
-              <p className="text-2xl font-black text-xp-color">1250</p>
+            <div className="night-card p-4 text-center">
+              <Zap className="w-8 h-8 text-primary mx-auto mb-2" />
+              <p className="text-2xl font-display font-bold text-primary">1250</p>
               <p className="text-xs text-muted-foreground">XP Total</p>
             </div>
-            <div className="bg-card rounded-2xl p-4 text-center border border-border">
-              <Flame className="w-8 h-8 text-streak-color mx-auto mb-2" />
-              <p className="text-2xl font-black text-streak-color">5</p>
+            <div className="night-card p-4 text-center">
+              <Flame className="w-8 h-8 text-success mx-auto mb-2" />
+              <p className="text-2xl font-display font-bold text-success">5</p>
               <p className="text-xs text-muted-foreground">Dias streak</p>
             </div>
-            <div className="bg-card rounded-2xl p-4 text-center border border-border">
-              <Trophy className="w-8 h-8 text-coin-color mx-auto mb-2" />
-              <p className="text-2xl font-black text-coin-color">12</p>
+            <div className="night-card p-4 text-center">
+              <Trophy className="w-8 h-8 text-reward mx-auto mb-2" />
+              <p className="text-2xl font-display font-bold text-reward">12</p>
               <p className="text-xs text-muted-foreground">Conquistas</p>
             </div>
           </div>
 
           {/* Activity */}
-          <div className="bg-card rounded-2xl p-6 border border-border">
+          <div className="night-card p-6">
             <h2 className="font-bold mb-4">Atividade Recente</h2>
             <div className="space-y-3 text-sm text-muted-foreground">
               <p>🎯 Completou 3 sessões hoje</p>

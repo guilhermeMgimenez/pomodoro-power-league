@@ -122,20 +122,20 @@ const Index = () => {
 
           {/* Stats Cards */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-card rounded-2xl p-6 border border-border">
-              <div className="flex items-center gap-3 mb-2 text-neon-orange">
+            <div className="night-card p-6">
+              <div className="flex items-center gap-3 mb-2 text-reward">
                 <Star className="w-6 h-6" />
                 <span className="text-sm text-muted-foreground">Pontuação diária</span>
               </div>
-              <p className="text-4xl font-black">{dailyScore}</p>
+              <p className="text-4xl font-display font-bold">{dailyScore}</p>
             </div>
             
-            <div className="bg-card rounded-2xl p-6 border border-border">
-              <div className="flex items-center gap-3 mb-2 text-streak-color">
+            <div className="night-card p-6">
+              <div className="flex items-center gap-3 mb-2 text-success">
                 <Flame className="w-6 h-6" />
                 <span className="text-sm text-muted-foreground">Streak</span>
               </div>
-              <p className="text-4xl font-black">{streak} dias</p>
+              <p className="text-4xl font-display font-bold">{streak} dias</p>
             </div>
           </div>
         </div>

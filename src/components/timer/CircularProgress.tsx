@@ -5,11 +5,11 @@ interface CircularProgressProps {
   color?: string;
 }
 
-export const CircularProgress = ({ 
-  progress, 
-  size = 320, 
-  strokeWidth = 12,
-  color = "hsl(var(--primary))"
+export const CircularProgress = ({
+  progress,
+  size = 320,
+  strokeWidth = 10,
+  color = "hsl(var(--primary))",
 }: CircularProgressProps) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
@@ -23,9 +23,9 @@ export const CircularProgress = ({
         cy={size / 2}
         r={radius}
         fill="none"
-        stroke="hsl(var(--border))"
+        stroke="hsl(var(--foreground))"
         strokeWidth={strokeWidth}
-        opacity={0.3}
+        opacity={0.08}
       />
       {/* Progress circle */}
       <circle
@@ -38,9 +38,9 @@ export const CircularProgress = ({
         strokeDasharray={circumference}
         strokeDashoffset={offset}
         strokeLinecap="round"
-        className="transition-all duration-1000 ease-out animate-pulse"
+        className="transition-all duration-1000 ease-out"
         style={{
-          filter: `drop-shadow(0 0 20px ${color}) drop-shadow(0 0 40px ${color})`
+          filter: `drop-shadow(0 0 12px ${color})`,
         }}
       />
     </svg>
