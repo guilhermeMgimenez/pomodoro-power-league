@@ -10,7 +10,7 @@ interface CurrentTaskProps {
 
 export const CurrentTask = ({ taskName, progress, totalMinutes, completedMinutes }: CurrentTaskProps) => {
   return (
-    <div className="bg-card rounded-2xl p-5 border border-border">
+    <div className="night-card p-5">
       <div className="flex items-start gap-3 mb-3">
         <div className="p-2 bg-primary/10 rounded-lg">
           <BookOpen className="w-5 h-5 text-primary" />
@@ -22,7 +22,7 @@ export const CurrentTask = ({ taskName, progress, totalMinutes, completedMinutes
           </p>
         </div>
         <div className="text-right">
-          <span className="text-2xl font-black text-primary">{Math.round(progress)}%</span>
+          <span className="text-2xl font-display font-bold text-primary">{Math.round(progress)}%</span>
         </div>
       </div>
       <Progress value={progress} className="h-2" />

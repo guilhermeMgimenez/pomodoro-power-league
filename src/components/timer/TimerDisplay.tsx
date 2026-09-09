@@ -51,7 +51,7 @@ export const TimerDisplay = ({ minutes, seconds, progress, mode }: TimerDisplayP
         {/* Neon glow effect on time */}
         <div className="relative animate-fade-in">
           <div className="absolute inset-0 blur-2xl opacity-30 animate-pulse" style={{ backgroundColor: color }} />
-          <div className="text-8xl font-black tabular-nums tracking-tight neon-text relative z-10 transition-all duration-300" style={{ color }}>
+          <div className="text-8xl font-display font-bold tabular-nums tracking-tight neon-text relative z-10 transition-all duration-300" style={{ color }}>
             {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
           </div>
         </div>

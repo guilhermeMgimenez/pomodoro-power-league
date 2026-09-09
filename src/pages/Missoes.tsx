@@ -16,7 +16,7 @@ const Missoes = () => {
 
           <div className="space-y-4">
             {missions.map((mission) => (
-              <div key={mission.id} className="bg-card rounded-2xl p-6 border border-border">
+              <div key={mission.id} className="night-card p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-start gap-3">
                     <div className="p-2 bg-primary/10 rounded-lg">
@@ -33,7 +33,7 @@ const Missoes = () => {
                       </p>
                     </div>
                   </div>
-                  <span className="text-sm font-bold text-xp-color">+{mission.xp} XP</span>
+                  <span className="text-sm font-bold text-primary">+{mission.xp} XP</span>
                 </div>
                 <div className="w-full bg-secondary rounded-full h-2">
                   <div
