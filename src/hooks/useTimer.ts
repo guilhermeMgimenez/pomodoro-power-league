@@ -10,7 +10,7 @@ interface UseTimerProps {
 export const useTimer = ({ initialMinutes, onComplete }: UseTimerProps) => {
   const [secondsLeft, setSecondsLeft] = useState(initialMinutes * 60);
   const [isRunning, setIsRunning] = useState(false);
-  const intervalRef = useRef<NodeJS.Timeout>();
+  const intervalRef = useRef<ReturnType<typeof setInterval>>();
   const startTimeRef = useRef<number>();
 
   const totalSeconds = initialMinutes * 60;
