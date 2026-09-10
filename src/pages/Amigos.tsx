@@ -23,11 +23,11 @@ const Amigos = () => {
       <div className="min-h-screen bg-background pb-24">
         <div className="max-w-2xl mx-auto">
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-6 border-b border-border">
+          <div className="flex items-center justify-between px-6 py-6 border-b border-foreground/10">
             <button onClick={() => navigate(-1)}>
-              <ArrowLeft className="w-6 h-6" />
+              <ArrowLeft strokeWidth={1.5} className="w-6 h-6 text-muted-foreground hover:text-foreground transition-colors duration-200" />
             </button>
-            <h1 className="text-xl font-bold">Placar de Amigos</h1>
+            <h1 className="font-display text-xl font-semibold">Placar de Amigos</h1>
             <div className="w-6" />
           </div>
 
@@ -41,7 +41,7 @@ const Amigos = () => {
               </TabsTrigger>
               <TabsTrigger
                 value="amigos"
-                className="rounded-none border-b-2 border-transparent data-[state=active]:border-accent data-[state=active]:bg-transparent data-[state=active]:text-accent"
+                className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary"
               >
                 Amigos
               </TabsTrigger>
@@ -57,18 +57,16 @@ const Amigos = () => {
               {leaderboard.map((user) => (
                 <div
                   key={user.id}
-                  className={`rounded-2xl p-5 transition-all ${
-                    user.isUser
-                      ? "bg-card border-2 border-primary neon-glow"
-                      : "bg-card border border-border"
+                  className={`night-card p-5 ${
+                    user.isUser ? "border-primary/40 shadow-glow" : ""
                   }`}
                 >
                   <div className="flex items-center gap-4">
-                    <span className="text-2xl font-bold text-muted-foreground w-8">
+                    <span className="font-display text-2xl font-semibold text-muted-foreground w-8">
                       {user.rank}
                     </span>
                     
-                    <Avatar className="w-14 h-14 border-2 border-primary">
+                    <Avatar className="w-14 h-14 border border-primary/40">
                       <AvatarFallback className="bg-primary/20 text-primary font-bold">
                         {user.name.charAt(0)}
                       </AvatarFallback>
@@ -82,9 +80,9 @@ const Amigos = () => {
                     {user.change !== 0 && (
                       <div className={`flex items-center gap-1 ${user.change > 0 ? "text-primary" : "text-destructive"}`}>
                         {user.change > 0 ? (
-                          <TrendingUp className="w-4 h-4" />
+                          <TrendingUp strokeWidth={1.5} className="w-4 h-4" />
                         ) : (
-                          <TrendingDown className="w-4 h-4" />
+                          <TrendingDown strokeWidth={1.5} className="w-4 h-4" />
                         )}
                         <span className="font-bold">{Math.abs(user.change)}</span>
                       </div>
@@ -109,9 +107,9 @@ const Amigos = () => {
           {/* FAB */}
           <Button
             size="icon"
-            className="fixed bottom-28 right-6 w-16 h-16 rounded-full bg-accent hover:bg-accent/90 shadow-xl cyan-glow"
+            className="fixed bottom-28 right-6 w-16 h-16 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-glow transition-all duration-200"
           >
-            <Plus className="w-8 h-8" />
+            <Plus strokeWidth={1.5} className="w-8 h-8" />
           </Button>
         </div>
       </div>
