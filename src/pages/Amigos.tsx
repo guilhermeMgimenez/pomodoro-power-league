@@ -32,7 +32,7 @@ const Amigos = () => {
           </div>
 
           <Tabs defaultValue="amigos" className="w-full">
-            <TabsList className="w-full grid grid-cols-3 bg-transparent border-b border-border rounded-none h-auto p-0">
+            <TabsList className="w-full grid grid-cols-3 bg-transparent border-b border-foreground/10 rounded-none h-auto p-0">
               <TabsTrigger
                 value="ranking"
                 className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent"
