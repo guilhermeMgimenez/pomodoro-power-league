@@ -26,23 +26,23 @@ export const CompletionModal = ({ open, onClose, earnedXP, earnedCoins }: Comple
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md bg-background border-border">
+      <DialogContent className="sm:max-w-md bg-popover border-foreground/10 rounded-2xl">
         <button
           onClick={onClose}
           className="absolute left-4 top-4 text-muted-foreground hover:text-foreground transition-colors"
         >
-          <X className="w-6 h-6" />
+          <X strokeWidth={1.5} className="w-6 h-6" />
         </button>
 
         <div className="flex flex-col items-center py-8 px-4">
           {/* Trophy Icon */}
           <div className="mb-6 relative">
-            <div className="absolute inset-0 bg-reward blur-3xl opacity-50 rounded-full" />
-            <Trophy className="w-24 h-24 text-reward relative z-10" />
+            <div className="absolute inset-0 bg-reward blur-3xl opacity-25 rounded-full" />
+            <Trophy strokeWidth={1.25} className="w-24 h-24 text-reward relative z-10" />
           </div>
 
           {/* Title */}
-          <h2 className="text-4xl font-display font-bold text-accent mb-2 tracking-wider">
+          <h2 className="font-display text-4xl font-bold text-reward mb-2 tracking-wide">
             VITÓRIA!
           </h2>
           <p className="text-muted-foreground text-center mb-8">
@@ -52,17 +52,17 @@ export const CompletionModal = ({ open, onClose, earnedXP, earnedCoins }: Comple
           {/* Rewards */}
           {showRewards && (
             <div className="w-full grid grid-cols-2 gap-4 mb-8 animate-fade-in">
-              <div className="bg-card/50 rounded-lg p-6 text-center">
-                <p className="text-primary text-sm font-bold mb-2">XP</p>
+              <div className="night-card p-6 text-center">
+                <p className="text-reward text-sm font-semibold mb-2">XP</p>
                 <div className="flex items-center justify-center gap-2">
-                  <span className="text-3xl font-display font-bold text-primary">{earnedXP}</span>
-                  <span className="text-primary text-xl">+</span>
+                  <span className="font-display text-3xl font-bold text-reward">{earnedXP}</span>
+                  <span className="text-reward text-xl">+</span>
                 </div>
               </div>
-              <div className="bg-card/50 rounded-lg p-6 text-center">
-                <p className="text-reward text-sm font-bold mb-2">MOEDAS</p>
+              <div className="night-card p-6 text-center">
+                <p className="text-reward text-sm font-semibold mb-2">MOEDAS</p>
                 <div className="flex items-center justify-center gap-2">
-                  <span className="text-3xl font-display font-bold text-reward">{earnedCoins}</span>
+                  <span className="font-display text-3xl font-bold text-reward">{earnedCoins}</span>
                   <span className="text-reward text-xl">+</span>
                 </div>
               </div>
@@ -71,7 +71,7 @@ export const CompletionModal = ({ open, onClose, earnedXP, earnedCoins }: Comple
 
           {/* Quality Rating */}
           <div className="w-full mb-8">
-            <p className="text-accent text-center font-bold mb-4 tracking-wide">
+            <p className="text-muted-foreground text-center text-sm font-medium mb-4 tracking-wide uppercase">
               QUALIDADE DA SESSÃO
             </p>
             <div className="flex justify-center gap-3">
@@ -79,13 +79,13 @@ export const CompletionModal = ({ open, onClose, earnedXP, earnedCoins }: Comple
                 <button
                   key={star}
                   onClick={() => setQuality(star)}
-                  className="transition-all hover:scale-110"
+                  className="transition-transform duration-200 hover:scale-110"
                 >
                   <Star
                     className={`w-10 h-10 ${
                       star <= quality
                         ? "fill-reward text-reward"
-                        : "fill-muted text-muted"
+                        : "fill-transparent text-muted-foreground/40"
                     }`}
                   />
                 </button>
@@ -96,7 +96,7 @@ export const CompletionModal = ({ open, onClose, earnedXP, earnedCoins }: Comple
           {/* Continue Button */}
           <Button
             onClick={handleContinue}
-            className="w-full h-14 text-lg font-bold gradient-neon hover:opacity-90 transition-opacity"
+            className="w-full h-14 text-lg font-display font-semibold rounded-2xl"
           >
             CONTINUAR
           </Button>

@@ -16,7 +16,7 @@ export const ModeSelector = ({ currentMode, onModeChange, disabled }: ModeSelect
   ];
 
   return (
-    <div className="flex gap-2 p-1.5 bg-secondary/50 rounded-lg backdrop-blur-sm">
+    <div className="flex gap-1 p-1.5 bg-card/70 border border-foreground/10 rounded-2xl backdrop-blur-sm">
       {modes.map(({ value, label, icon: Icon, minutes }) => (
         <Button
           key={value}
@@ -24,9 +24,9 @@ export const ModeSelector = ({ currentMode, onModeChange, disabled }: ModeSelect
           size="sm"
           onClick={() => onModeChange(value)}
           disabled={disabled}
-          className={currentMode === value ? "gradient-primary" : ""}
+          className={`rounded-xl transition-all duration-200 ${currentMode === value ? "bg-primary/15 text-primary border border-primary/30 shadow-glow" : "text-muted-foreground hover:text-foreground"}`}
         >
-          <Icon className="w-4 h-4 mr-2" />
+          <Icon strokeWidth={1.5} className="w-4 h-4 mr-2" />
           {label}
           <span className="ml-1.5 text-xs opacity-70">{minutes}m</span>
         </Button>

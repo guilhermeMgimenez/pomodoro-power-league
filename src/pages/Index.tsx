@@ -67,9 +67,9 @@ const Index = () => {
         <div className="max-w-2xl mx-auto px-6 py-8 space-y-6">
           {/* Header */}
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold">Foco</h1>
-            <button className="p-3 rounded-full bg-card hover:bg-secondary transition-colors">
-              <Settings className="w-6 h-6" />
+            <h1 className="font-display text-2xl font-semibold">Foco</h1>
+            <button className="p-3 rounded-full bg-card border border-foreground/10 text-muted-foreground hover:text-primary hover:border-primary/30 hover:shadow-glow transition-all duration-200">
+              <Settings strokeWidth={1.5} className="w-6 h-6" />
             </button>
           </div>
 
@@ -78,11 +78,11 @@ const Index = () => {
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground">Meta diária</span>
               <div className="text-right">
-                <span className="text-2xl font-bold text-primary">{dailyGoal.current}/{dailyGoal.total}</span>
+                <span className="font-display text-2xl font-semibold text-primary">{dailyGoal.current}/{dailyGoal.total}</span>
                 <p className="text-sm text-muted-foreground">100 pontos</p>
               </div>
             </div>
-            <Progress value={(dailyGoal.current / dailyGoal.total) * 100} className="h-2" />
+            <Progress value={(dailyGoal.current / dailyGoal.total) * 100} className="h-1.5" />
           </div>
 
           {/* Mode Selector */}
@@ -124,18 +124,18 @@ const Index = () => {
           <div className="grid grid-cols-2 gap-4">
             <div className="night-card p-6">
               <div className="flex items-center gap-3 mb-2 text-reward">
-                <Star className="w-6 h-6" />
+                <Star strokeWidth={1.5} className="w-6 h-6" />
                 <span className="text-sm text-muted-foreground">Pontuação diária</span>
               </div>
-              <p className="text-4xl font-display font-bold">{dailyScore}</p>
+              <p className="font-display text-4xl font-bold">{dailyScore}</p>
             </div>
             
             <div className="night-card p-6">
               <div className="flex items-center gap-3 mb-2 text-success">
-                <Flame className="w-6 h-6" />
+                <Flame strokeWidth={1.5} className="w-6 h-6" />
                 <span className="text-sm text-muted-foreground">Streak</span>
               </div>
-              <p className="text-4xl font-display font-bold">{streak} dias</p>
+              <p className="font-display text-4xl font-bold">{streak} dias</p>
             </div>
           </div>
         </div>

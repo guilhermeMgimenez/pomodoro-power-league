@@ -12,32 +12,32 @@ const Missoes = () => {
     <>
       <div className="min-h-screen bg-background pb-24">
         <div className="max-w-2xl mx-auto px-6 py-8 space-y-6">
-          <h1 className="text-2xl font-bold">Missões</h1>
+          <h1 className="font-display text-2xl font-semibold">Missões</h1>
 
           <div className="space-y-4">
             {missions.map((mission) => (
               <div key={mission.id} className="night-card p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-start gap-3">
-                    <div className="p-2 bg-primary/10 rounded-lg">
+                    <div className="p-2.5 bg-primary/10 border border-primary/20 rounded-xl">
                       {mission.type === "daily" ? (
-                        <Calendar className="w-5 h-5 text-primary" />
+                        <Calendar strokeWidth={1.5} className="w-5 h-5 text-primary" />
                       ) : (
-                        <Trophy className="w-5 h-5 text-accent" />
+                        <Trophy strokeWidth={1.5} className="w-5 h-5 text-primary" />
                       )}
                     </div>
                     <div>
-                      <h3 className="font-semibold mb-1">{mission.title}</h3>
+                      <h3 className="font-display font-semibold mb-1">{mission.title}</h3>
                       <p className="text-sm text-muted-foreground">
                         {mission.progress}/{mission.total}
                       </p>
                     </div>
                   </div>
-                  <span className="text-sm font-bold text-primary">+{mission.xp} XP</span>
+                  <span className="text-sm font-semibold text-reward">+{mission.xp} XP</span>
                 </div>
-                <div className="w-full bg-secondary rounded-full h-2">
+                <div className="w-full bg-foreground/10 rounded-full h-1.5">
                   <div
-                    className="h-full bg-primary rounded-full transition-all"
+                    className="h-full bg-primary rounded-full transition-all duration-300"
                     style={{ width: `${(mission.progress / mission.total) * 100}%` }}
                   />
                 </div>
