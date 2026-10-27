@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { DEFAULT_SETTINGS, PomodoroSettings } from "@/lib/pomodoro";
+import { focusPeriodStarts, GoalHorizon, periodFocusMinutes } from "@/lib/goals";
 
 export interface Task {
   id: string;
@@ -11,6 +12,7 @@ export interface Task {
   estimated_minutes: number;
   completed_minutes: number;
   done: boolean;
+  goal_id: string | null;
 }
 
 export const useProfile = () => {
@@ -19,7 +21,8 @@ export const useProfile = () => {
     queryKey: ["profile", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await supabase.from("profiles").select("display_name").eq("id", user!.id).maybeSingle();
+      if (!user) throw new Error("Entre para continuar.");
+      const { data, error } = await supabase.from("profiles").select("display_name").eq("id", user.id).maybeSingle();
       if (error) throw error;
       return data;
     },
@@ -32,10 +35,11 @@ export const useSettings = () => {
     queryKey: ["settings", user?.id],
     enabled: !!user,
     queryFn: async (): Promise<PomodoroSettings> => {
+      if (!user) throw new Error("Entre para continuar.");
       const { data, error } = await supabase
         .from("pomodoro_settings")
         .select("focus_minutes, short_break_minutes, long_break_minutes")
-        .eq("user_id", user!.id)
+        .eq("user_id", user.id)
         .maybeSingle();
       if (error) throw error;
       return data ?? DEFAULT_SETTINGS;
@@ -48,9 +52,10 @@ export const useSaveSettings = () => {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (s: PomodoroSettings) => {
+      if (!user) throw new Error("Entre para continuar.");
       const { error } = await supabase
         .from("pomodoro_settings")
-        .upsert({ user_id: user!.id, ...s, updated_at: new Date().toISOString() });
+        .upsert({ user_id: user.id, ...s, updated_at: new Date().toISOString() });
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["settings"] }),
@@ -65,7 +70,7 @@ export const useTasks = () => {
     queryFn: async (): Promise<Task[]> => {
       const { data, error } = await supabase
         .from("tasks")
-        .select("id,title,scheduled_at,timezone,estimated_minutes,completed_minutes,done")
+        .select("id,title,scheduled_at,timezone,estimated_minutes,completed_minutes,done,goal_id")
         .order("done")
         .order("scheduled_at", { nullsFirst: false });
       if (error) throw error;
@@ -132,6 +137,103 @@ export const useRecordSession = () => {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["tasks"] });
       qc.invalidateQueries({ queryKey: ["sessions-today"] });
+      qc.invalidateQueries({ queryKey: ["period-focus"] });
+    },
+  });
+};
+
+export interface Goal {
+  id: string;
+  title: string;
+  horizon: GoalHorizon;
+  target_minutes: number;
+  due_date: string | null;
+}
+
+export interface FocusPreferences {
+  daily_minutes: number;
+  weekly_minutes: number;
+  sound_enabled: boolean;
+  notifications_enabled: boolean;
+}
+
+export const DEFAULT_FOCUS_PREFERENCES: FocusPreferences = {
+  daily_minutes: 100, weekly_minutes: 500, sound_enabled: false, notifications_enabled: false,
+};
+
+export const useGoals = () => {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: ["goals", user?.id], enabled: !!user,
+    queryFn: async (): Promise<Goal[]> => {
+      const { data, error } = await supabase.from("goals").select("id,title,horizon,target_minutes,due_date").order("created_at");
+      if (error) throw error;
+      return data.map((g) => ({ ...g, horizon: g.horizon as GoalHorizon }));
+    },
+  });
+};
+
+export const useUpsertGoal = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (goal: Omit<Goal, "id"> & { id?: string }) => {
+      const { id, ...rest } = goal;
+      const { error } = id ? await supabase.from("goals").update(rest).eq("id", id) : await supabase.from("goals").insert(rest);
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["goals"] }),
+  });
+};
+
+export const useDeleteGoal = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("goals").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["goals"] });
+      qc.invalidateQueries({ queryKey: ["tasks"] });
+    },
+  });
+};
+
+export const useFocusPreferences = () => {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: ["focus-preferences", user?.id], enabled: !!user,
+    queryFn: async (): Promise<FocusPreferences> => {
+      if (!user) throw new Error("Entre para continuar.");
+      const { data, error } = await supabase.from("focus_preferences").select("daily_minutes,weekly_minutes,sound_enabled,notifications_enabled").eq("user_id", user.id).maybeSingle();
+      if (error) throw error;
+      return data ?? DEFAULT_FOCUS_PREFERENCES;
+    },
+  });
+};
+
+export const useSaveFocusPreferences = () => {
+  const { user } = useAuth();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (values: FocusPreferences) => {
+      if (!user) throw new Error("Entre para continuar.");
+      const { error } = await supabase.from("focus_preferences").upsert({ user_id: user.id, ...values });
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["focus-preferences"] }),
+  });
+};
+
+export const usePeriodFocus = () => {
+  const { user } = useAuth();
+  const { day, week } = focusPeriodStarts();
+  return useQuery({
+    queryKey: ["period-focus", user?.id, day.toISOString()], enabled: !!user, refetchInterval: 60_000,
+    queryFn: async () => {
+      const { data, error } = await supabase.from("focus_sessions").select("minutes,mode,completed_at").eq("mode", "focus").gte("completed_at", week.toISOString());
+      if (error) throw error;
+      return { daily: periodFocusMinutes(data, day), weekly: periodFocusMinutes(data, week) };
     },
   });
 };
