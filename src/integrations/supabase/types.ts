@@ -14,13 +14,128 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      focus_sessions: {
+        Row: {
+          completed_at: string
+          id: string
+          minutes: number
+          mode: string
+          task_id: string | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          id?: string
+          minutes: number
+          mode?: string
+          task_id?: string | null
+          user_id?: string
+        }
+        Update: {
+          completed_at?: string
+          id?: string
+          minutes?: number
+          mode?: string
+          task_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "focus_sessions_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pomodoro_settings: {
+        Row: {
+          focus_minutes: number
+          long_break_minutes: number
+          short_break_minutes: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          focus_minutes?: number
+          long_break_minutes?: number
+          short_break_minutes?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          focus_minutes?: number
+          long_break_minutes?: number
+          short_break_minutes?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string
+          id: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      tasks: {
+        Row: {
+          completed_minutes: number
+          created_at: string
+          done: boolean
+          estimated_minutes: number
+          id: string
+          scheduled_at: string | null
+          timezone: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          completed_minutes?: number
+          created_at?: string
+          done?: boolean
+          estimated_minutes?: number
+          id?: string
+          scheduled_at?: string | null
+          timezone?: string
+          title: string
+          user_id?: string
+        }
+        Update: {
+          completed_minutes?: number
+          created_at?: string
+          done?: boolean
+          estimated_minutes?: number
+          id?: string
+          scheduled_at?: string | null
+          timezone?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      record_focus_session: {
+        Args: { _minutes: number; _mode: string; _task_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
