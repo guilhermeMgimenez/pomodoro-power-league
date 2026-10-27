@@ -1,4 +1,4 @@
-import { Home, Target, Users, User } from "lucide-react";
+import { Home, Target, Users, User, ListTodo } from "lucide-react";
 import { useLocation, Link } from "react-router-dom";
 
 export const BottomNav = () => {
@@ -6,6 +6,7 @@ export const BottomNav = () => {
 
   const navItems = [
     { path: "/home", icon: Home, label: "Home" },
+    { path: "/tarefas", icon: ListTodo, label: "Tarefas" },
     { path: "/missoes", icon: Target, label: "Missões" },
     { path: "/amigos", icon: Users, label: "Amigos" },
     { path: "/perfil", icon: User, label: "Perfil" },

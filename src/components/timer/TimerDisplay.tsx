@@ -6,6 +6,7 @@ interface TimerDisplayProps {
   seconds: number;
   progress: number;
   mode: TimerMode;
+  status?: string;
 }
 
 const getModeColor = (mode: TimerMode) => {
@@ -19,7 +20,7 @@ const getModeColor = (mode: TimerMode) => {
   }
 };
 
-export const TimerDisplay = ({ minutes, seconds, progress, mode }: TimerDisplayProps) => {
+export const TimerDisplay = ({ minutes, seconds, progress, mode, status }: TimerDisplayProps) => {
   const color = getModeColor(mode);
 
   return (
@@ -44,8 +45,8 @@ export const TimerDisplay = ({ minutes, seconds, progress, mode }: TimerDisplayP
         >
           {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
         </div>
-        <p className="text-xs font-medium mt-3 text-muted-foreground uppercase tracking-[0.2em]">
-          minutos
+        <p data-testid="timer-status" className="text-xs font-medium mt-3 text-muted-foreground uppercase tracking-[0.2em]">
+          {status ?? "minutos"}
         </p>
       </div>
     </div>
