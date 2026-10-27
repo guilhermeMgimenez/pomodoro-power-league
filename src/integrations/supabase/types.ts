@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      focus_preferences: {
+        Row: {
+          daily_minutes: number
+          notifications_enabled: boolean
+          sound_enabled: boolean
+          user_id: string
+          weekly_minutes: number
+        }
+        Insert: {
+          daily_minutes?: number
+          notifications_enabled?: boolean
+          sound_enabled?: boolean
+          user_id?: string
+          weekly_minutes?: number
+        }
+        Update: {
+          daily_minutes?: number
+          notifications_enabled?: boolean
+          sound_enabled?: boolean
+          user_id?: string
+          weekly_minutes?: number
+        }
+        Relationships: []
+      }
       focus_sessions: {
         Row: {
           completed_at: string
@@ -48,6 +72,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      goals: {
+        Row: {
+          created_at: string
+          due_date: string | null
+          horizon: string
+          id: string
+          target_minutes: number
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          due_date?: string | null
+          horizon?: string
+          id?: string
+          target_minutes?: number
+          title: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          due_date?: string | null
+          horizon?: string
+          id?: string
+          target_minutes?: number
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       pomodoro_settings: {
         Row: {
@@ -97,6 +151,7 @@ export type Database = {
           created_at: string
           done: boolean
           estimated_minutes: number
+          goal_id: string | null
           id: string
           scheduled_at: string | null
           timezone: string
@@ -108,6 +163,7 @@ export type Database = {
           created_at?: string
           done?: boolean
           estimated_minutes?: number
+          goal_id?: string | null
           id?: string
           scheduled_at?: string | null
           timezone?: string
@@ -119,13 +175,22 @@ export type Database = {
           created_at?: string
           done?: boolean
           estimated_minutes?: number
+          goal_id?: string | null
           id?: string
           scheduled_at?: string | null
           timezone?: string
           title?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "tasks_goal_id_fkey"
+            columns: ["goal_id"]
+            isOneToOne: false
+            referencedRelation: "goals"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
