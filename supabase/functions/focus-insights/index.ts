@@ -43,7 +43,7 @@ Deno.serve(async (req) => {
   const sessions=results[0].data ?? [], tasks=results[1].data ?? [], goals=results[2].data ?? [];
   const daily:Record<string,number>={};
   for(const s of sessions) { const date=new Intl.DateTimeFormat('en-CA',{timeZone:timezone,dateStyle:'short'}).format(new Date(s.completed_at)); daily[date]=(daily[date]??0)+s.minutes; }
-  const context={period:{start,end,timezone},dailyFocusMinutes:daily,focusMinutes:sessions.filter(s=>s.completed_at>=start).reduce((n,s)=>n+s.minutes,0),previousFocusMinutes:sessions.filter(s=>s.completed_at<start).reduce((n,s)=>n+s.minutes,0),pomodoros:sessions.filter(s=>s.completed_at>=start).length,tasks,goals,targets:results[3].data};
+  const context={period:{start,end,timezone,now:new Date().toISOString(),isComplete:Date.now()>=Date.parse(end)},taskCompletionDatesRecordedAutomatically:true,dailyFocusMinutes:daily,focusMinutes:sessions.filter(s=>s.completed_at>=start).reduce((n,s)=>n+s.minutes,0),previousFocusMinutes:sessions.filter(s=>s.completed_at<start).reduce((n,s)=>n+s.minutes,0),pomodoros:sessions.filter(s=>s.completed_at>=start).length,tasks,goals,targets:results[3].data};
   const key=Deno.env.get('LOVABLE_API_KEY');
   if(!key) return respond({error:'Lovable AI não está configurada.'},503);
   try {
