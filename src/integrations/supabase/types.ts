@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      focus_insights: {
+        Row: {
+          advice: Json | null
+          error_message: string | null
+          error_status: number | null
+          generated_at: string
+          timezone: string
+          user_id: string
+          week_start: string
+        }
+        Insert: {
+          advice?: Json | null
+          error_message?: string | null
+          error_status?: number | null
+          generated_at?: string
+          timezone: string
+          user_id?: string
+          week_start: string
+        }
+        Update: {
+          advice?: Json | null
+          error_message?: string | null
+          error_status?: number | null
+          generated_at?: string
+          timezone?: string
+          user_id?: string
+          week_start?: string
+        }
+        Relationships: []
+      }
       focus_preferences: {
         Row: {
           daily_minutes: number
@@ -147,6 +177,7 @@ export type Database = {
       }
       tasks: {
         Row: {
+          completed_at: string | null
           completed_minutes: number
           created_at: string
           done: boolean
@@ -159,6 +190,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          completed_at?: string | null
           completed_minutes?: number
           created_at?: string
           done?: boolean
@@ -171,6 +203,7 @@ export type Database = {
           user_id?: string
         }
         Update: {
+          completed_at?: string | null
           completed_minutes?: number
           created_at?: string
           done?: boolean

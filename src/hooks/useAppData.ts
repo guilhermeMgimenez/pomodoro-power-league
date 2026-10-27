@@ -1,8 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { DEFAULT_SETTINGS, PomodoroSettings } from "@/lib/pomodoro";
 import { focusPeriodStarts, GoalHorizon, periodFocusMinutes } from "@/lib/goals";
+import { reportWeek } from "@/lib/reports";
 
 export interface Task {
   id: string;
@@ -12,6 +14,7 @@ export interface Task {
   estimated_minutes: number;
   completed_minutes: number;
   done: boolean;
+  completed_at: string | null;
   goal_id: string | null;
 }
 
@@ -70,7 +73,7 @@ export const useTasks = () => {
     queryFn: async (): Promise<Task[]> => {
       const { data, error } = await supabase
         .from("tasks")
-        .select("id,title,scheduled_at,timezone,estimated_minutes,completed_minutes,done,goal_id")
+        .select("id,title,scheduled_at,timezone,estimated_minutes,completed_minutes,done,goal_id,completed_at")
         .order("done")
         .order("scheduled_at", { nullsFirst: false });
       if (error) throw error;
@@ -89,7 +92,7 @@ export const useUpsertTask = () => {
         : await supabase.from("tasks").insert(rest);
       if (error) throw error;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["tasks"] }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["tasks"] }); qc.invalidateQueries({ queryKey: ["weekly-report"] }); },
   });
 };
 
@@ -138,6 +141,7 @@ export const useRecordSession = () => {
       qc.invalidateQueries({ queryKey: ["tasks"] });
       qc.invalidateQueries({ queryKey: ["sessions-today"] });
       qc.invalidateQueries({ queryKey: ["period-focus"] });
+      qc.invalidateQueries({ queryKey: ["weekly-report"] });
     },
   });
 };
@@ -236,4 +240,58 @@ export const usePeriodFocus = () => {
       return { daily: periodFocusMinutes(data, day), weekly: periodFocusMinutes(data, week) };
     },
   });
+};
+
+export interface FocusAdvice { summary: string; tips: { title: string; detail: string }[] }
+export interface InsightResult { advice: FocusAdvice; generated_at: string }
+
+export const useWeeklySessions = (offset: number) => {
+  const { user } = useAuth();
+  const { start, end, previous } = reportWeek(offset);
+  return useQuery({
+    queryKey: ["weekly-report", user?.id, start.toISOString()], enabled: !!user,
+    queryFn: async () => {
+      if (!user) throw new Error("Entre para continuar.");
+      const all = [];
+      for (let from = 0; ; from += 1000) {
+        const { data, error } = await supabase.from("focus_sessions").select("id,minutes,mode,completed_at")
+          .eq("user_id", user.id).eq("mode", "focus").gte("completed_at", previous.toISOString()).lt("completed_at", end.toISOString())
+          .order("completed_at").order("id").range(from, from + 999);
+        if (error) throw error;
+        all.push(...data);
+        if (data.length < 1000) break;
+      }
+      return all;
+    },
+  });
+};
+
+async function requestInsights(offset: number, refresh: boolean): Promise<InsightResult> {
+  const { start, end, previous } = reportWeek(offset);
+  const { data, error } = await supabase.functions.invoke("focus-insights", { body: {
+    start: start.toISOString(), end: end.toISOString(), previous: previous.toISOString(),
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, refresh,
+  } });
+  if (error) {
+    const context = (error as { context?: Response | { error?: string; body?: { error?: string } } }).context;
+    const detail = context && "json" in context && typeof context.json === "function"
+      ? await context.json().catch(() => null)
+      : context && "body" in context ? context.body : context;
+    throw new Error(detail?.error ?? "Não foi possível gerar suas sugestões.");
+  }
+  if (!data?.advice?.tips?.length) throw new Error(data?.error ?? "A IA não retornou sugestões.");
+  return data;
+}
+
+export const useFocusInsights = (offset: number, enabled: boolean) => {
+  const { user } = useAuth();
+  const { start } = reportWeek(offset);
+  const queryClient = useQueryClient();
+  const queryKey = ["focus-insights", user?.id, start.toISOString()];
+  const query = useQuery({ queryKey, enabled: !!user && enabled, queryFn: () => requestInsights(offset, false),
+    retry: false, staleTime: Infinity, refetchOnWindowFocus: false, refetchOnMount: false });
+  const refresh = useMutation({ mutationFn: () => requestInsights(offset, true),
+    onSuccess: (data) => queryClient.setQueryData(queryKey, data) });
+  useEffect(() => { refresh.reset(); }, [offset]);
+  return { ...query, refresh };
 };

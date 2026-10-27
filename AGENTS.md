@@ -10,3 +10,5 @@
 - Goal progress aggregates completed minutes of currently linked tasks; period targets count focus sessions from local midnight or Monday — breaks never count.
 - Task-to-goal ownership is validated by a database trigger in addition to owner-scoped RLS — links must not cross users.
 - Session alerts are opt-in browser audio and notifications; zen uses fullscreen without navigation so the timer stays mounted.
+- Reports aggregate local Monday-to-Monday weeks from focus sessions and server-stamped task completion dates; legacy undated completions remain undated rather than fabricated.
+- Lovable AI insights run in an authenticated edge function that queries owner-scoped data, caches each week/timezone, and persists terminal credit/access failures; refresh requires explicit user action.
