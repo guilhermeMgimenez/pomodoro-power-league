@@ -15,6 +15,13 @@
       "when": 1793142122293,
       "tag": "0001_milestone_two_goals_preferences",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793142770479,
+      "tag": "0002_milestone_three_reports",
+      "breakpoints": true
     }
   ]
 }
