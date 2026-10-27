@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { DEFAULT_SETTINGS, PomodoroSettings } from "@/lib/pomodoro";
@@ -272,8 +273,10 @@ async function requestInsights(offset: number, refresh: boolean): Promise<Insigh
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, refresh,
   } });
   if (error) {
-    const context = (error as { context?: Response }).context;
-    const detail = context ? await context.json().catch(() => null) : null;
+    const context = (error as { context?: Response | { error?: string; body?: { error?: string } } }).context;
+    const detail = context && "json" in context && typeof context.json === "function"
+      ? await context.json().catch(() => null)
+      : context && "body" in context ? context.body : context;
     throw new Error(detail?.error ?? "Não foi possível gerar suas sugestões.");
   }
   if (!data?.advice?.tips?.length) throw new Error(data?.error ?? "A IA não retornou sugestões.");
@@ -289,5 +292,6 @@ export const useFocusInsights = (offset: number, enabled: boolean) => {
     retry: false, staleTime: Infinity, refetchOnWindowFocus: false, refetchOnMount: false });
   const refresh = useMutation({ mutationFn: () => requestInsights(offset, true),
     onSuccess: (data) => queryClient.setQueryData(queryKey, data) });
+  useEffect(() => { refresh.reset(); }, [offset]);
   return { ...query, refresh };
 };
