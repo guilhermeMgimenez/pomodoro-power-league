@@ -1,8 +1,17 @@
 import { BottomNav } from "@/components/layout/BottomNav";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Trophy, Flame, Zap } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Trophy, Flame, Zap, LogOut } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useProfile } from "@/hooks/useAppData";
 
 const Perfil = () => {
+  const { user, signOut } = useAuth();
+  const { data: profile } = useProfile();
+  const name = profile?.display_name || user?.email?.split("@")[0] || "Você";
+  const since = user?.created_at
+    ? new Intl.DateTimeFormat("pt-BR", { month: "short", year: "numeric" }).format(new Date(user.created_at))
+    : "";
   return (
     <>
       <div className="min-h-screen bg-background pb-24">
@@ -11,13 +20,17 @@ const Perfil = () => {
           <div className="flex flex-col items-center gap-4">
             <Avatar className="w-24 h-24 border-2 border-primary/40 shadow-glow">
               <AvatarFallback className="bg-primary/20 text-primary text-3xl font-bold">
-                V
+                {name.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
             <div className="text-center">
-              <h1 className="font-display text-2xl font-semibold">Você</h1>
-              <p className="text-muted-foreground">Membro desde Jan 2025</p>
+              <h1 className="font-display text-2xl font-semibold">{name}</h1>
+              <p className="text-muted-foreground">{user?.email}</p>
+              {since && <p className="text-xs text-muted-foreground">Membro desde {since}</p>}
             </div>
+            <Button variant="outline" size="sm" onClick={signOut}>
+              <LogOut strokeWidth={1.5} className="w-4 h-4 mr-2" />Sair
+            </Button>
           </div>
 
           {/* Stats */}
