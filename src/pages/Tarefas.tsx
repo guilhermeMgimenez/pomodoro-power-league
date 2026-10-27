@@ -7,7 +7,8 @@ import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Plus, Pencil, Trash2, Clock } from "lucide-react";
-import { Task, useTasks, useUpsertTask, useDeleteTask } from "@/hooks/useAppData";
+import { Task, useTasks, useUpsertTask, useDeleteTask, useGoals } from "@/hooks/useAppData";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { taskProgress } from "@/lib/pomodoro";
 import { toast } from "sonner";
 
@@ -27,12 +28,13 @@ const Tarefas = () => {
   const { data: tasks = [], isLoading } = useTasks();
   const upsert = useUpsertTask();
   const del = useDeleteTask();
+  const { data: goals = [] } = useGoals();
   const [editing, setEditing] = useState<Partial<Task> | null>(null);
-  const [form, setForm] = useState({ title: "", when: "", estimated: "25" });
+  const [form, setForm] = useState({ title: "", when: "", estimated: "25", goal: "none" });
 
   const open = (t?: Task) => {
     setEditing(t ?? {});
-    setForm({ title: t?.title ?? "", when: toLocalInput(t?.scheduled_at ?? null), estimated: String(t?.estimated_minutes ?? 25) });
+    setForm({ title: t?.title ?? "", when: toLocalInput(t?.scheduled_at ?? null), estimated: String(t?.estimated_minutes ?? 25), goal: t?.goal_id ?? "none" });
   };
 
   const save = () => {
@@ -46,6 +48,7 @@ const Tarefas = () => {
         scheduled_at: form.when ? new Date(form.when).toISOString() : null,
         timezone: localTz,
         estimated_minutes: est,
+        goal_id: form.goal === "none" ? null : form.goal,
       },
       { onSuccess: () => setEditing(null), onError: () => toast.error("Não foi possível salvar.") },
     );
@@ -75,13 +78,14 @@ const Tarefas = () => {
                     />
                     <div className="flex-1 min-w-0">
                       <h3 className={`font-display font-semibold ${t.done ? "line-through" : ""}`}>{t.title}</h3>
+                      {t.goal_id && <p className="text-xs text-primary">{goals.find((g) => g.id === t.goal_id)?.title}</p>}
                       <p className="text-sm text-muted-foreground flex items-center gap-1.5">
                         {t.scheduled_at && <><Clock strokeWidth={1.5} className="w-3.5 h-3.5" />{fmt(t.scheduled_at)} · </>}
                         {t.completed_minutes}/{t.estimated_minutes} min
                       </p>
                     </div>
-                    <button aria-label="Editar" onClick={() => open(t)} className="p-2 text-muted-foreground hover:text-primary transition-colors"><Pencil strokeWidth={1.5} className="w-4 h-4" /></button>
-                    <button aria-label="Excluir" onClick={() => del.mutate(t.id)} className="p-2 text-muted-foreground hover:text-destructive transition-colors"><Trash2 strokeWidth={1.5} className="w-4 h-4" /></button>
+                    <Button size="icon" variant="ghost" aria-label="Editar" onClick={() => open(t)}><Pencil strokeWidth={1.5} className="w-4 h-4" /></Button>
+                    <Button size="icon" variant="ghost" aria-label="Excluir" onClick={() => del.mutate(t.id, { onError: () => toast.error("Não foi possível excluir a tarefa.") })}><Trash2 strokeWidth={1.5} className="w-4 h-4" /></Button>
                   </div>
                   <Progress value={taskProgress(t.completed_minutes, t.estimated_minutes)} className="h-1.5" />
                 </li>
@@ -111,6 +115,13 @@ const Tarefas = () => {
               </div>
             </div>
             <p className="text-xs text-muted-foreground">Fuso: {localTz}</p>
+            <div className="space-y-2">
+              <Label htmlFor="t-goal">Meta vinculada</Label>
+              <Select value={form.goal} onValueChange={(goal) => setForm({ ...form, goal })}>
+                <SelectTrigger id="t-goal"><SelectValue /></SelectTrigger>
+                <SelectContent><SelectItem value="none">Sem meta</SelectItem>{goals.map((goal) => <SelectItem key={goal.id} value={goal.id}>{goal.title}</SelectItem>)}</SelectContent>
+              </Select>
+            </div>
             <Button className="w-full" onClick={save} disabled={upsert.isPending}>Salvar</Button>
           </div>
         </DialogContent>
