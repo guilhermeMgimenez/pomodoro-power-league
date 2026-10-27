@@ -74,19 +74,23 @@ const Index = () => {
     recordSession.mutate(
       { taskId: mode === "focus" ? taskId : null, minutes, mode },
       { onSuccess: () => {
-        if (mode === "focus") { setEarnedXP(minutes); setShowCompletionModal(true); }
+        if (mode === "focus") {
+          if (document.fullscreenElement) void document.exitFullscreen().catch(() => undefined);
+          setZen(false);
+          setEarnedXP(minutes); setShowCompletionModal(true);
+        } else toast.success("Pausa concluída.");
       }, onError: () => toast.error("Não foi possível salvar a sessão.") },
     );
   };
 
-  const { minutes, seconds, progress, isRunning, isFresh, start, startWith, pause, reset } = useTimer({
+  const { minutes, seconds, progress, isRunning, isFresh, isCompleted, start, startWith, pause, reset } = useTimer({
     initialMinutes: minutesForMode(mode, settings),
     onComplete: handleComplete,
   });
 
   const handleStart = () => {
     alerts.unlock();
-    if (mode === "focus" && isFresh) setCycleOpen(true);
+    if (mode === "focus" && (isFresh || isCompleted)) setCycleOpen(true);
     else { start(); alerts.notify(mode, false); }
   };
 
@@ -137,11 +141,11 @@ const Index = () => {
               seconds={seconds}
               progress={progress}
               mode={mode}
-              status={isRunning ? statusForMode(mode) : isFresh ? "Pronto" : "Pausado"}
+              status={isRunning ? statusForMode(mode) : isCompleted ? "Concluído" : isFresh ? "Pronto" : "Pausado"}
             />
           </div>
 
-          <TimerControls isRunning={isRunning} onStart={handleStart} onPause={pause} onReset={reset} startLabel={isFresh ? "Iniciar" : "Continuar"} />
+          <TimerControls isRunning={isRunning} onStart={handleStart} onPause={pause} onReset={reset} startLabel={isFresh || isCompleted ? "Iniciar" : "Continuar"} />
 
           {openTasks.length > 0 ? (
             <div className="space-y-3">

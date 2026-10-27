@@ -60,6 +60,7 @@ export const useTimer = ({ initialMinutes, onComplete }: UseTimerProps) => {
     progress,
     isRunning,
     isFresh,
+    isCompleted: !isRunning && secondsLeft === 0,
     start,
     startWith,
     pause,
