@@ -64,7 +64,7 @@ const Tarefas = () => {
           </div>
 
           {isLoading ? null : tasks.length === 0 ? (
-            <p className="night-card p-6 text-muted-foreground">Nenhuma tarefa ainda. Crie a primeira e comece a acender seu céu ✨</p>
+            <p className="night-card p-6 text-muted-foreground">Nenhuma tarefa ainda. Crie a primeira e comece a acender seu céu.</p>
           ) : (
             <ul className="space-y-3">
               {tasks.map((t) => (

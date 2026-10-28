@@ -197,7 +197,7 @@ const Index = () => {
       <FocusOptionsDialog open={optionsOpen} onOpenChange={setOptionsOpen} preferences={preferences} />
 
       <CycleDialog open={cycleOpen} initial={settings} onOpenChange={setCycleOpen} onStart={handleCycleStart} />
-      <CompletionModal open={showCompletionModal} onClose={() => setShowCompletionModal(false)} earnedXP={earnedXP} earnedCoins={Math.round(earnedXP / 5)} />
+      <CompletionModal open={showCompletionModal} onClose={() => setShowCompletionModal(false)} earnedStardust={earnedXP} />
     </>
   );
 };

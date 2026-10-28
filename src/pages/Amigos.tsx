@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { BottomNav } from "@/components/layout/BottomNav";
-import { Check, UserPlus, X } from "lucide-react";
+import { Check, Sparkles, UserPlus, X } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,7 @@ import { rankLeaderboard } from "@/lib/gamification";
 import { toast } from "sonner";
 
 const MESSAGES: Record<string, string> = {
-  sent: "Convite enviado ✨",
+  sent: "Convite enviado.",
   not_found: "Nenhuma conta encontrada com esse e-mail.",
   self: "Esse é o seu próprio e-mail.",
   exists: "Vocês já têm um convite ou amizade.",
@@ -62,7 +62,7 @@ const Amigos = () => {
                     </Avatar>
                     <div className="flex-1 min-w-0">
                       <h3 className="font-semibold truncate">{u.is_me ? "Você" : u.display_name}</h3>
-                      <p className="text-sm text-muted-foreground">{u.stardust} ✨ Stardust</p>
+                      <p className="text-sm text-muted-foreground"><span className="inline-flex items-center gap-1"><Sparkles strokeWidth={1.5} className="w-3.5 h-3.5 text-reward" />{u.stardust} Stardust</span></p>
                     </div>
                   </div>
                 </div>
