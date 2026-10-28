@@ -295,3 +295,76 @@ export const useFocusInsights = (offset: number, enabled: boolean) => {
   useEffect(() => { refresh.reset(); }, [offset]);
   return { ...query, refresh };
 };
+
+export const useAllFocusSessions = () => {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: ["period-focus", "all", user?.id], enabled: !!user,
+    queryFn: async () => {
+      if (!user) throw new Error("Entre para continuar.");
+      const all: { minutes: number; mode: string; completed_at: string }[] = [];
+      for (let from = 0; ; from += 1000) {
+        const { data, error } = await supabase.from("focus_sessions").select("id,minutes,mode,completed_at")
+          .eq("user_id", user.id).eq("mode", "focus").order("completed_at", { ascending: false }).order("id").range(from, from + 999);
+        if (error) throw error;
+        all.push(...data);
+        if (data.length < 1000) break;
+      }
+      return all;
+    },
+  });
+};
+
+export const useFriendRequests = () => {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: ["friends", "requests", user?.id], enabled: !!user,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc("friend_requests");
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+};
+
+export const useLeaderboard = () => {
+  const { user } = useAuth();
+  const { week } = focusPeriodStarts();
+  return useQuery({
+    queryKey: ["friends", "leaderboard", user?.id, week.toISOString()], enabled: !!user,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc("friend_leaderboard", { _week_start: week.toISOString() });
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+};
+
+export const useFriendActions = () => {
+  const qc = useQueryClient();
+  const done = () => qc.invalidateQueries({ queryKey: ["friends"] });
+  return {
+    send: useMutation({
+      mutationFn: async (email: string) => {
+        const { data, error } = await supabase.rpc("send_friend_request", { _email: email });
+        if (error) throw error;
+        return data as string;
+      },
+      onSuccess: done,
+    }),
+    accept: useMutation({
+      mutationFn: async (id: string) => {
+        const { error } = await supabase.from("friendships").update({ status: "accepted" }).eq("id", id);
+        if (error) throw error;
+      },
+      onSuccess: done,
+    }),
+    remove: useMutation({
+      mutationFn: async (id: string) => {
+        const { error } = await supabase.from("friendships").delete().eq("id", id);
+        if (error) throw error;
+      },
+      onSuccess: done,
+    }),
+  };
+};
