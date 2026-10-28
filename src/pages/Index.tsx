@@ -17,6 +17,8 @@ import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useSettings, useSaveSettings, useTasks, useRecordSession, usePeriodFocus, useFocusPreferences, DEFAULT_FOCUS_PREFERENCES } from "@/hooks/useAppData";
 import { toast } from "sonner";
+import { useAllFocusSessions } from "@/hooks/useAppData";
+import { constellation } from "@/lib/gamification";
 
 const Index = () => {
   const { data: savedSettings } = useSettings();
@@ -28,6 +30,8 @@ const Index = () => {
   const dailyGoal = preferences.daily_minutes;
   const alerts = useSessionAlerts(preferences);
   const recordSession = useRecordSession();
+  const { data: allSessions = [] } = useAllFocusSessions();
+  const streak = constellation(allSessions);
 
   const [settings, setSettings] = useState<PomodoroSettings>(DEFAULT_SETTINGS);
   const [mode, setMode] = useState<TimerMode>("focus");
@@ -174,16 +178,16 @@ const Index = () => {
             <div className="night-card p-6">
               <div className="flex items-center gap-3 mb-2 text-reward">
                 <Star strokeWidth={1.5} className="w-6 h-6" />
-                <span className="text-sm text-muted-foreground">Pontuação diária</span>
+                <span className="text-sm text-muted-foreground">Stardust hoje</span>
               </div>
               <p className="font-display text-4xl font-bold">{todayMinutes}</p>
             </div>
             <div className="night-card p-6">
               <div className="flex items-center gap-3 mb-2 text-success">
                 <Flame strokeWidth={1.5} className="w-6 h-6" />
-                <span className="text-sm text-muted-foreground">Streak</span>
+                <span className="text-sm text-muted-foreground">Constelação</span>
               </div>
-              <p className="font-display text-4xl font-bold">5 dias</p>
+              <p className="font-display text-4xl font-bold">{streak} {streak === 1 ? "dia" : "dias"}</p>
             </div>
           </div>}
         </div>
