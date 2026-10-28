@@ -13,3 +13,10 @@
 - [x] Registrar a data de conclusão das tarefas sem inventar datas históricas.
 - [x] Sugestões reais de Lovable AI contextualizadas por metas, tarefas e sessões, com cache e erros claros.
 - [x] Testar regras e fluxo autenticado com dados reais.
+# Marco 4
+
+- [x] Stardust, Constelação e Fase da lua reais na Home e no Perfil.
+- [x] Céu Coletivo: convites por e-mail e ranking semanal real.
+- [x] Compartilhar resumo semanal.
+- [x] Timer ajustado a telas estreitas + testes das regras.
+- Tema claro, PWA, push e Wake Lock seguem fora por decisão anterior.

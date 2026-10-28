@@ -24,11 +24,11 @@ export const TimerDisplay = ({ minutes, seconds, progress, mode, status }: Timer
   const color = getModeColor(mode);
 
   return (
-    <div className="relative flex items-center justify-center">
+    <div className="relative flex items-center justify-center w-[min(320px,calc(100vw-48px))] aspect-square">
       {/* Superfície interna */}
       <div className="absolute inset-0 flex items-center justify-center">
         <div
-          className="w-[280px] h-[280px] rounded-full border border-foreground/[0.06]"
+          className="w-[87.5%] h-[87.5%] rounded-full border border-foreground/[0.06]"
           style={{
             background:
               "radial-gradient(circle at 50% 30%, hsl(var(--card)) 0%, hsl(var(--background)) 75%)",
@@ -40,7 +40,7 @@ export const TimerDisplay = ({ minutes, seconds, progress, mode, status }: Timer
 
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <div
-          className="font-display text-[64px] leading-none font-bold tabular-nums tracking-tight transition-colors duration-300"
+          className="font-display text-[clamp(44px,15vw,64px)] leading-none font-bold tabular-nums tracking-tight transition-colors duration-300"
           style={{ color, textShadow: `0 0 28px ${color}55` }}
         >
           {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}

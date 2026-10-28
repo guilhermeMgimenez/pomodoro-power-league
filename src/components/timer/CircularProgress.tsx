@@ -16,7 +16,7 @@ export const CircularProgress = ({
   const offset = circumference - (progress / 100) * circumference;
 
   return (
-    <svg width={size} height={size} className="transform -rotate-90">
+    <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full transform -rotate-90">
       {/* Background circle */}
       <circle
         cx={size / 2}

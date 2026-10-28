@@ -3,6 +3,8 @@ import { ChevronLeft, ChevronRight, Clock3, CheckCheck, Timer, Sparkles, Refresh
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { BottomNav } from '@/components/layout/BottomNav';
 import { Button } from '@/components/ui/button';
+import { Share2 } from "lucide-react";
+import { toast } from "sonner";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { useWeeklySessions, useTasks, useFocusInsights } from '@/hooks/useAppData';
 import { weeklyReport, reportWeek, focusChange, formatFocus } from '@/lib/reports';
@@ -23,12 +25,23 @@ const Resumos = () => {
   const insightError = insights.refresh.error ?? insights.error;
   const loadingAdvice = insights.isFetching || insights.refresh.isPending;
   const date = (d: Date) => d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
+  const share = async () => {
+    const text = `🌙 Minha semana no Focus Time (${date(start)} — ${date(last)}): ${formatFocus(report.minutes)} de foco, ${report.pomodoros} pomodoros e ${report.tasks} tarefas concluídas. ✨`;
+    try {
+      if (navigator.share) { await navigator.share({ title: 'Focus Time', text }); return; }
+      await navigator.clipboard.writeText(text);
+      toast.success('Resumo copiado. Agora é só colar onde quiser.');
+    } catch (e) {
+      if ((e as Error).name !== 'AbortError') toast.error('Não foi possível compartilhar agora.');
+    }
+  };
   return <>
     <main className="min-h-screen bg-background pb-28">
       <div className="max-w-3xl mx-auto px-6 py-8 space-y-8">
         <header className="flex items-center justify-between gap-4 flex-wrap">
           <div><h1 className="font-display text-2xl font-semibold">Resumos</h1><p className="text-sm text-muted-foreground mt-1">Seu ritmo, semana a semana.</p></div>
           <div className="flex items-center gap-2">
+            <Button size="icon" variant="outline" aria-label="Compartilhar progresso" title="Compartilhar progresso" disabled={pending || failed} onClick={share}><Share2 className="h-4 w-4" strokeWidth={1.5} /></Button>
             <Button size="icon" variant="outline" aria-label="Semana anterior" disabled={offset <= -51} onClick={() => setOffset(v => v - 1)}><ChevronLeft className="h-4 w-4" /></Button>
             <span className="text-sm text-center min-w-36">{date(start)} — {date(last)}</span>
             <Button size="icon" variant="outline" aria-label="Próxima semana" disabled={offset === 0} onClick={() => setOffset(v => v + 1)}><ChevronRight className="h-4 w-4" /></Button>
