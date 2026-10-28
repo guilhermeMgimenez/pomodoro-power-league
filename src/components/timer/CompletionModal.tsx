@@ -1,107 +1,32 @@
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Trophy, Star, X } from "lucide-react";
-import { useState } from "react";
+import { Sparkles, Trophy } from "lucide-react";
 
 interface CompletionModalProps {
   open: boolean;
   onClose: () => void;
-  earnedXP: number;
-  earnedCoins: number;
+  earnedStardust: number;
 }
 
-export const CompletionModal = ({ open, onClose, earnedXP, earnedCoins }: CompletionModalProps) => {
-  const [quality, setQuality] = useState<number>(0);
-  const [showRewards, setShowRewards] = useState(false);
-
-  const handleContinue = () => {
-    if (quality === 0) {
-      setShowRewards(true);
-    } else {
-      onClose();
-      setQuality(0);
-      setShowRewards(false);
-    }
-  };
-
-  return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md bg-popover border-foreground/10 rounded-2xl">
-        <button
-          onClick={onClose}
-          className="absolute left-4 top-4 text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <X strokeWidth={1.5} className="w-6 h-6" />
-        </button>
-
-        <div className="flex flex-col items-center py-8 px-4">
-          {/* Trophy Icon */}
-          <div className="mb-6 relative">
-            <div className="absolute inset-0 bg-reward blur-3xl opacity-25 rounded-full" />
-            <Trophy strokeWidth={1.25} className="w-24 h-24 text-reward relative z-10" />
-          </div>
-
-          {/* Title */}
-          <h2 className="font-display text-4xl font-bold text-reward mb-2 tracking-wide">
-            VITÓRIA!
-          </h2>
-          <p className="text-muted-foreground text-center mb-8">
-            Sessão concluída! Suas recompensas te esperam.
-          </p>
-
-          {/* Rewards */}
-          {showRewards && (
-            <div className="w-full grid grid-cols-2 gap-4 mb-8 animate-fade-in">
-              <div className="night-card p-6 text-center">
-                <p className="text-reward text-sm font-semibold mb-2">XP</p>
-                <div className="flex items-center justify-center gap-2">
-                  <span className="font-display text-3xl font-bold text-reward">{earnedXP}</span>
-                  <span className="text-reward text-xl">+</span>
-                </div>
-              </div>
-              <div className="night-card p-6 text-center">
-                <p className="text-reward text-sm font-semibold mb-2">MOEDAS</p>
-                <div className="flex items-center justify-center gap-2">
-                  <span className="font-display text-3xl font-bold text-reward">{earnedCoins}</span>
-                  <span className="text-reward text-xl">+</span>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Quality Rating */}
-          <div className="w-full mb-8">
-            <p className="text-muted-foreground text-center text-sm font-medium mb-4 tracking-wide uppercase">
-              QUALIDADE DA SESSÃO
-            </p>
-            <div className="flex justify-center gap-3">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  key={star}
-                  onClick={() => setQuality(star)}
-                  className="transition-transform duration-200 hover:scale-110"
-                >
-                  <Star
-                    className={`w-10 h-10 ${
-                      star <= quality
-                        ? "fill-reward text-reward"
-                        : "fill-transparent text-muted-foreground/40"
-                    }`}
-                  />
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Continue Button */}
-          <Button
-            onClick={handleContinue}
-            className="w-full h-14 text-lg font-display font-semibold rounded-2xl"
-          >
-            CONTINUAR
-          </Button>
+export const CompletionModal = ({ open, onClose, earnedStardust }: CompletionModalProps) => (
+  <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
+    <DialogContent className="sm:max-w-md bg-popover border-foreground/10 rounded-2xl">
+      <div className="flex flex-col items-center py-8 px-4">
+        <div className="mb-6 relative">
+          <div className="absolute inset-0 bg-reward blur-3xl opacity-25 rounded-full" />
+          <Trophy strokeWidth={1.25} className="w-24 h-24 text-reward relative z-10" />
         </div>
-      </DialogContent>
-    </Dialog>
-  );
-};
+        <DialogTitle className="font-display text-4xl font-bold text-reward mb-2 tracking-wide">Sessão concluída</DialogTitle>
+        <DialogDescription className="text-muted-foreground text-center mb-8">Mais uma estrela acesa no seu céu.</DialogDescription>
+        <div className="night-card w-full p-6 text-center mb-8">
+          <p className="text-reward text-sm font-semibold mb-2">STARDUST</p>
+          <div className="flex items-center justify-center gap-2">
+            <Sparkles strokeWidth={1.5} className="w-6 h-6 text-reward" />
+            <span className="font-display text-3xl font-bold text-reward">+{earnedStardust}</span>
+          </div>
+        </div>
+        <Button onClick={onClose} className="w-full h-14 text-lg font-display font-semibold rounded-2xl">Continuar</Button>
+      </div>
+    </DialogContent>
+  </Dialog>
+);

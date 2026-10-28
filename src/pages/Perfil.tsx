@@ -64,7 +64,7 @@ const Perfil = () => {
           <div className="night-card p-6 space-y-3">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Fase {phase.name}</span>
-              <span>{phase.next ? `${phase.toNext} ✨ até ${phase.next}` : "Fase máxima alcançada 🌙"}</span>
+              <span className="inline-flex items-center gap-1">{phase.next ? <><Sparkles strokeWidth={1.5} className="w-3.5 h-3.5 text-reward" />{phase.toNext} até {phase.next}</> : <><Moon strokeWidth={1.5} className="w-3.5 h-3.5 text-primary" />Fase máxima alcançada</>}</span>
             </div>
             <Progress value={phaseProgress} className="h-1.5" />
           </div>
@@ -76,7 +76,7 @@ const Perfil = () => {
               : <ul className="space-y-3 text-sm text-muted-foreground">
                   {recent.map((s, i) => (
                     <li key={i} className="flex justify-between gap-3">
-                      <span>Foco de {s.minutes} min · +{s.minutes} ✨</span>
+                      <span className="inline-flex items-center gap-1">Foco de {s.minutes} min · +{s.minutes}<Sparkles strokeWidth={1.5} className="w-3.5 h-3.5 text-reward" /></span>
                       <span>{new Date(s.completed_at).toLocaleString("pt-BR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}</span>
                     </li>
                   ))}

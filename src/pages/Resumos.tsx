@@ -26,7 +26,7 @@ const Resumos = () => {
   const loadingAdvice = insights.isFetching || insights.refresh.isPending;
   const date = (d: Date) => d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
   const share = async () => {
-    const text = `🌙 Minha semana no Focus Time (${date(start)} — ${date(last)}): ${formatFocus(report.minutes)} de foco, ${report.pomodoros} pomodoros e ${report.tasks} tarefas concluídas. ✨`;
+    const text = `Minha semana no Focus Time (${date(start)} — ${date(last)}): ${formatFocus(report.minutes)} de foco, ${report.pomodoros} pomodoros e ${report.tasks} tarefas concluídas.`;
     try {
       if (navigator.share) { await navigator.share({ title: 'Focus Time', text }); return; }
       await navigator.clipboard.writeText(text);
