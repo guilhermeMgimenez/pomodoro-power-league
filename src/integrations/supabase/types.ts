@@ -103,6 +103,30 @@ export type Database = {
           },
         ]
       }
+      friendships: {
+        Row: {
+          addressee_id: string
+          created_at: string
+          id: string
+          requester_id: string
+          status: string
+        }
+        Insert: {
+          addressee_id: string
+          created_at?: string
+          id?: string
+          requester_id: string
+          status?: string
+        }
+        Update: {
+          addressee_id?: string
+          created_at?: string
+          id?: string
+          requester_id?: string
+          status?: string
+        }
+        Relationships: []
+      }
       goals: {
         Row: {
           created_at: string
@@ -230,10 +254,29 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      friend_leaderboard: {
+        Args: { _week_start: string }
+        Returns: {
+          display_name: string
+          is_me: boolean
+          stardust: number
+          user_id: string
+        }[]
+      }
+      friend_requests: {
+        Args: never
+        Returns: {
+          id: string
+          incoming: boolean
+          other_name: string
+          status: string
+        }[]
+      }
       record_focus_session: {
         Args: { _minutes: number; _mode: string; _task_id: string }
         Returns: undefined
       }
+      send_friend_request: { Args: { _email: string }; Returns: string }
     }
     Enums: {
       [_ in never]: never
