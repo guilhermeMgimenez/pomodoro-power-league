@@ -1,4 +1,4 @@
-import logoAsset from "@/assets/focus-time-logo.png.asset.json";
+import logoAsset from "@/assets/focus-time-logo-transparent.png.asset.json";
 
 export const BrandLogo = ({ className = "", decorative = false }: { className?: string; decorative?: boolean }) => (
   <img
