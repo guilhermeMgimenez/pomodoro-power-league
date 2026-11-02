@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Timer } from "lucide-react";
+import { BrandLogo } from "@/components/layout/BrandLogo";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -54,10 +54,8 @@ const Login = () => {
 
       <div className="w-full max-w-md space-y-8 relative z-10 animate-fade-in">
         <div className="text-center space-y-4">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 border border-primary/25 shadow-glow mb-4">
-            <Timer strokeWidth={1.5} className="w-10 h-10 text-primary" />
-          </div>
-          <h1 className="font-display text-5xl font-bold tracking-tight neon-text">Foco</h1>
+          <BrandLogo decorative className="w-28 h-32 mx-auto rounded-xl" />
+          <h1 className="font-display text-5xl font-bold tracking-tight neon-text">Focus Time</h1>
           <p className="text-muted-foreground text-lg">
             {mode === "login" ? "Entre para continuar sua jornada" : "Crie sua conta e acenda sua primeira estrela"}
           </p>
