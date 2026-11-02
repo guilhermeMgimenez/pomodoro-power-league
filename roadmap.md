@@ -5,7 +5,7 @@
 - [x] Som e notificação ao iniciar e concluir foco ou pausa, com consentimento.
 - [x] Modo zen em tela cheia, com saída disponível.
 - [x] Testar regras, persistência e fluxo autenticado de sessão.
-- PWA, Web Push agendado e Wake Lock continuam adiados conforme decisão desktop-first.
+- Web Push agendado e Wake Lock continuam adiados; instalação PWA foi aprovada posteriormente.
 
 # Marco 3
 
@@ -19,4 +19,10 @@
 - [x] Céu Coletivo: convites por e-mail e ranking semanal real.
 - [x] Compartilhar resumo semanal.
 - [x] Timer ajustado a telas estreitas + testes das regras.
-- Tema claro, PWA, push e Wake Lock seguem fora por decisão anterior.
+- Tema claro, push e Wake Lock seguem fora por decisão anterior.
+
+# Instalação no celular
+
+- [x] Manifest com nome Focus Time, abertura independente e ícones derivados da logo.
+- [x] Metadados de instalação para Android e iPhone, mantendo favicon .ico 16x16.
+- [ ] Verificar manifest e ícones no navegador.

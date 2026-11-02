@@ -6,7 +6,7 @@
 - Pomodoro rules (validation, time math, task progress) are pure functions in `src/lib/pomodoro.ts` with vitest tests next to them — keeps rules testable.
 - The timer counts down from an absolute end time, never by decrementing per tick — background tabs throttle intervals.
 - Completing a focus session goes through the `record_focus_session` DB function so the session row and task progress update together.
-- Desktop-first for now; mobile-only features (PWA, push, Wake Lock) are deferred by the team.
+- Home-screen installation is manifest-only with local public icons and standalone display; no app-shell service worker is registered because offline support was not requested. Push and Wake Lock remain deferred.
 - Goal progress aggregates completed minutes of currently linked tasks; period targets count focus sessions from local midnight or Monday — breaks never count.
 - Task-to-goal ownership is validated by a database trigger in addition to owner-scoped RLS — links must not cross users.
 - Session alerts are opt-in browser audio and notifications; zen uses fullscreen without navigation so the timer stays mounted.
