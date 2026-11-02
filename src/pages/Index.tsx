@@ -9,6 +9,7 @@ import { CurrentTask } from "@/components/timer/CurrentTask";
 import { ModeSelector } from "@/components/timer/ModeSelector";
 import { CycleDialog } from "@/components/timer/CycleDialog";
 import { BottomNav } from "@/components/layout/BottomNav";
+import { BrandLogo } from "@/components/layout/BrandLogo";
 import { Star, Flame, Maximize, Minimize, Settings2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FocusOptionsDialog } from "@/components/timer/FocusOptionsDialog";
@@ -117,7 +118,10 @@ const Index = () => {
       <div ref={zenElement} className={zen ? "fixed inset-0 z-50 overflow-auto bg-background" : "min-h-screen bg-background pb-24"}>
         <div className="max-w-2xl mx-auto px-6 py-8 space-y-6">
           <div className="flex items-center justify-between">
-            <h1 className="font-display text-2xl font-semibold">{zen ? "Focus Time" : "Foco"}</h1>
+            <div className="flex items-center gap-3">
+              <BrandLogo decorative className="w-10 h-12 rounded-md" />
+              <h1 className="font-display text-2xl font-semibold">{zen ? "Focus Time" : "Foco"}</h1>
+            </div>
             <div className="flex gap-2">
               {!zen && <Button size="icon" variant="ghost" aria-label="Alertas de sessão" title="Alertas de sessão" onClick={() => setOptionsOpen(true)}><Settings2 strokeWidth={1.5} className="w-5 h-5" /></Button>}
               <Button variant="outline" onClick={toggleZen} aria-label={zen ? "Sair do modo zen" : "Modo zen"}>{zen ? <Minimize className="w-4 h-4 mr-2" /> : <Maximize className="w-4 h-4 mr-2" />}{zen ? "Sair" : "Modo zen"}</Button>
