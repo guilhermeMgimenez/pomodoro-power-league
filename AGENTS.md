@@ -14,4 +14,4 @@
 - Lovable AI insights run in an authenticated edge function that queries owner-scoped data, caches each week/timezone, and persists terminal credit/access failures; refresh requires explicit user action.
 - Gamification rules (Stardust = focus minutes, constellation = consecutive local days, moon phase thresholds, ranking) are pure functions in `src/lib/gamification.ts` with tests.
 - Friends see each other only through security-definer functions that expose name and weekly Stardust; invites are sent by exact e-mail via `send_friend_request`, never by listing users.
-- Brand identification uses the shared BrandLogo component backed by a CDN asset pointer; the favicon is a padded local raster derived from that same source to keep artwork consistent.
+- Brand identification uses the shared BrandLogo component backed by the transparent CDN asset pointer; the favicon is a 16x16 .ico (public/favicon.ico, brand-gradient fill with thickened strokes for legibility) derived from the same transparent source.
