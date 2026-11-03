@@ -25,4 +25,4 @@
 
 - [x] Manifest com nome Focus Time, abertura independente e ícones derivados da logo.
 - [x] Metadados de instalação para Android e iPhone, mantendo favicon .ico 16x16.
-- [ ] Verificar manifest e ícones no navegador.
+- [x] Verificar manifest e ícones no navegador.
