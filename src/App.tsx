@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { TimerProvider } from "@/contexts/TimerContext";
 import Login from "./pages/Login";
 import Index from "./pages/Index";
 import Tarefas from "./pages/Tarefas";
@@ -21,7 +22,7 @@ const P = ({ children }: { children: JSX.Element }) => <ProtectedRoute>{children
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
-      <TooltipProvider>
+      <TimerProvider><TooltipProvider>
         <Toaster />
         <Sonner />
         <BrowserRouter>
@@ -37,7 +38,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
-      </TooltipProvider>
+      </TooltipProvider></TimerProvider>
     </AuthProvider>
   </QueryClientProvider>
 );
