@@ -37,3 +37,7 @@ export const addFocusMinutes = (completed: number, add: number) => completed + M
 
 export const taskProgress = (completed: number, estimated: number) =>
   estimated > 0 ? Math.min(100, (completed / estimated) * 100) : 0;
+
+/** Whole focus minutes already elapsed when the user stops early (partial sessions are kept). */
+export const elapsedWholeMinutes = (totalSeconds: number, secondsLeft: number) =>
+  Math.max(0, Math.floor((totalSeconds - Math.max(0, secondsLeft)) / 60));

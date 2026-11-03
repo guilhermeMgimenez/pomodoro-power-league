@@ -28,3 +28,13 @@ describe("pomodoro rules", () => {
     expect(DEFAULT_SETTINGS).toEqual({ focus_minutes: 25, short_break_minutes: 5, long_break_minutes: 15 });
   });
 });
+
+import { elapsedWholeMinutes } from "./pomodoro";
+describe("elapsedWholeMinutes", () => {
+  it("keeps 5 minutes when stopping a 10-minute timer halfway", () => {
+    expect(elapsedWholeMinutes(600, 300)).toBe(5);
+  });
+  it("ignores partial minutes", () => {
+    expect(elapsedWholeMinutes(600, 545)).toBe(0);
+  });
+});

@@ -17,7 +17,7 @@ export const ModeSelector = ({ currentMode, onModeChange, settings, disabled }: 
   ];
 
   return (
-    <div className="flex gap-1 p-1.5 bg-card/70 border border-foreground/10 rounded-2xl backdrop-blur-sm">
+    <div className="flex w-full max-w-md min-w-0 gap-1 p-1.5 bg-card/70 border border-foreground/10 rounded-2xl backdrop-blur-sm">
       {modes.map(({ value, label, icon: Icon }) => (
         <Button
           key={value}
@@ -25,11 +25,11 @@ export const ModeSelector = ({ currentMode, onModeChange, settings, disabled }: 
           size="sm"
           onClick={() => onModeChange(value)}
           disabled={disabled}
-          className={`rounded-xl transition-all duration-200 ${currentMode === value ? "bg-primary/15 text-primary border border-primary/30 shadow-glow" : "text-muted-foreground hover:text-foreground"}`}
+          className={`flex-1 min-w-0 px-1.5 sm:px-3 rounded-xl transition-all duration-200 ${currentMode === value ? "bg-primary/15 text-primary border border-primary/30 shadow-glow" : "text-muted-foreground hover:text-foreground"}`}
         >
-          <Icon strokeWidth={1.5} className="w-4 h-4 mr-2" />
-          {label}
-          <span className="ml-1.5 text-xs opacity-70">{minutesForMode(value, settings)}m</span>
+          <Icon strokeWidth={1.5} className="w-4 h-4 shrink-0 sm:mr-2 mr-1" />
+          <span className="truncate">{label}</span>
+          <span className="ml-1 text-xs opacity-70 hidden sm:inline">{minutesForMode(value, settings)}m</span>
         </Button>
       ))}
     </div>
